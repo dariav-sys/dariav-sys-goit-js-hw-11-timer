@@ -9,8 +9,6 @@ class CountdownTimer {
       mins: document.querySelector('[data-value = "mins"]'),
       secs: document.querySelector('[data-value = "secs"]'),
     };
-
-    this.updateTime();
   } 
 
   updateTime() {
@@ -38,8 +36,9 @@ class CountdownTimer {
   }
 }
 
-
-new CountdownTimer({
+const example = new CountdownTimer({
   selector: '#timer-1',
   targetDate: new Date('Mar 17, 2021'),
 });
+
+example.updateTime()
