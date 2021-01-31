@@ -1,41 +1,57 @@
-const colors = [
-  '#FFFFFF',
-  '#2196F3',
-  '#4CAF50',
-  '#FF9800',
-  '#009688',
-  '#795548',
-];
+class CountdownTimer {
+  constructor({ selector, targetDate }) {
+    this.selector = document.querySelector(selector);
+    this.targetDate = targetDate;
 
-let startBtn = document.querySelector('[data-action = "start"]');
-let stopBtn = document.querySelector('[data-action = "stop"]');
+    this.refs = {
+      days: document.querySelector('[data-value = "days"]'),
+      hours: document.querySelector('[data-value = "hours"]'),
+      mins: document.querySelector('[data-value = "mins"]'),
+      secs: document.querySelector('[data-value = "secs"]'),
+    };
 
+    this.updateTime();
+  }
 
+  // targetDate = new Date('Mar 17, 2021');
 
+  // startTimer() {}
 
+  updateTime() {
+    setInterval(() => {
+      this.currentDate = new Date();
+      this.remainingTime = this.targetDate - this.currentDate;
 
+      this.days = Math.floor(this.remainingTime / (1000 * 60 * 60 * 24));
+      this.hours = pad(
+        Math.floor((this.remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+      );
+      this.mins = pad(Math.floor((this.remainingTime % (1000 * 60 * 60)) / (1000 * 60)));
+      this.secs = pad(Math.floor((this.remainingTime % (1000 * 60)) / 1000));
 
-startBtn.addEventListener('click', startBtnHandler);
-stopBtn.addEventListener('click', stopBtnHadler);
+      this.refs.days.textContent = `${this.days}`;
+      this.refs.hours.textContent = `${this.hours}`;
+      this.refs.mins.textContent = `${this.mins}`;
+      this.refs.secs.textContent = `${this.secs}`;
 
-function randomColor() {
-    return colors[Math.floor(Math.random() * colors.length)];
+      // updateTime(deltaTime);
+    }, 1000);
+
+    function pad(value) {
+      return String(value).padStart(2, '0');
+    }
+  }
 }
 
-function setRandomColor() {
-    document.body.style.backgroundColor = randomColor();
-}
+// const refs = {
+//     days: document.querySelector('[data-value = "days"]'),
+//     hours: document.querySelector('[data-value = "hours"]'),
+//     mins: document.querySelector('[data-value = "mins"]'),
+//     secs: document.querySelector('[data-value = "secs"]'),
 
-let interval;
+// }
 
-function startBtnHandler() {
-    startBtn.removeEventListener('click', startBtnHandler); 
-    interval = setInterval(() => setRandomColor(), 1000); 
-}
-
-function stopBtnHadler() {
-    clearInterval(interval);
-    startBtn.addEventListener('click', startBtnHandler);
-}
-
-
+new CountdownTimer({
+  selector: '#timer-1',
+  targetDate: new Date('Mar 17, 2021'),
+});
